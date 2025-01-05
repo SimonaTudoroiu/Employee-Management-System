@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDate;
 
-@Table
+@Table(name = "leave_request")
 @Entity
 public class Leave {
     @Id
