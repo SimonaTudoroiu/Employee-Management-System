@@ -36,6 +36,9 @@ public class Employee {
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews;
 
+    @ManyToMany(mappedBy = "assignedEmployees")
+    private List<Project> projects;
+
     public Long getId() {
         return id;
     }

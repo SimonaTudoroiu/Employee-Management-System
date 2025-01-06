@@ -1,5 +1,8 @@
 package org.example.service;
 
+import org.example.dto.CreateEmployeeDTO;
+import org.example.dto.UpdateEmployeeDTO;
+import org.example.mapper.EmployeeMapper;
 import org.example.model.Department;
 import org.example.model.Employee;
 import org.example.repository.DepartmentRepository;
@@ -10,33 +13,35 @@ import org.springframework.stereotype.Service;
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final DepartmentRepository departmentRepository;
+    private final EmployeeMapper employeeMapper;
 
-    public EmployeeService(EmployeeRepository employeeRepository, DepartmentRepository departmentRepository) {
+    // Constructor injection for repositories and the mapper
+    public EmployeeService(EmployeeRepository employeeRepository, DepartmentRepository departmentRepository, EmployeeMapper employeeMapper) {
         this.employeeRepository = employeeRepository;
         this.departmentRepository = departmentRepository;
+        this.employeeMapper = employeeMapper;
     }
 
-    public Employee createEmployee(Employee employee) {
+    // Create employee method using the EmployeeMapper
+    public Employee createEmployee(CreateEmployeeDTO createEmployeeDTO) {
+        Employee employee = employeeMapper.fromCreateDtoToEntity(createEmployeeDTO);
         return employeeRepository.save(employee);
     }
 
+    // Get employee by ID
     public Employee getEmployeeById(Long id) {
         return employeeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Employee not found with ID: " + id));
     }
 
-    public Employee updateEmployee(Long id, Employee updatedEmployee) {
+    // Update employee method using the EmployeeMapper
+    public Employee updateEmployee(Long id, UpdateEmployeeDTO updateEmployeeDTO) {
         Employee existingEmployee = getEmployeeById(id);
-        existingEmployee.setName(updatedEmployee.getName());
-        existingEmployee.setEmail(updatedEmployee.getEmail());
-        existingEmployee.setPhone(updatedEmployee.getPhone());
-        existingEmployee.setRole(updatedEmployee.getRole());
-        Department department = departmentRepository.findById(updatedEmployee.getDepartment().getId())
-                .orElseThrow(() -> new RuntimeException("Department not found with ID: " + updatedEmployee.getDepartment().getId()));
-        existingEmployee.setDepartment(department);
+        existingEmployee = employeeMapper.fromUpdateDtoToEntity(updateEmployeeDTO, existingEmployee);
         return employeeRepository.save(existingEmployee);
     }
 
+    // Delete employee method
     public void deleteEmployee(Long id) {
         employeeRepository.deleteById(id);
     }
