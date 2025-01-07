@@ -1,6 +1,8 @@
 package org.example.service;
 
+import org.example.dto.AttendanceDTO;
 import org.example.dto.CreateAttendanceDTO;
+import org.example.exception.ResourceNotFoundException;
 import org.example.mapper.AttendanceMapper;
 import org.example.model.Attendance;
 import org.example.repository.AttendanceRepository;
@@ -19,27 +21,21 @@ public class AttendanceService {
         this.attendanceMapper = attendanceMapper;
     }
 
-    // Method to create a new attendance record using the AttendanceMapper
-    public Attendance checkIn(CreateAttendanceDTO createAttendanceDTO) {
-        // Convert DTO to Attendance entity using the mapper
+    public AttendanceDTO checkIn(CreateAttendanceDTO createAttendanceDTO) {
         Attendance attendance = attendanceMapper.fromCreateDtoToEntity(createAttendanceDTO);
-        // Save the attendance entity to the repository
-        return attendanceRepository.save(attendance);
+        Attendance savedAttendance = attendanceRepository.save(attendance);
+        return attendanceMapper.fromEntityToAttendanceDTO(savedAttendance);
     }
 
-    // Method to check out, without needing DTO conversion
-    public Attendance checkOut(Long attendanceId, LocalTime checkOutTime) {
-        // Find the attendance record by ID
+    public AttendanceDTO checkOut(Long attendanceId, LocalTime checkOutTime) {
         Attendance attendance = attendanceRepository.findById(attendanceId)
-                .orElseThrow(() -> new RuntimeException("Attendance record not found with ID: " + attendanceId));
-        // Set the check-out time
+                .orElseThrow(() -> new ResourceNotFoundException("Attendance record not found with ID: " + attendanceId));
         attendance.setCheckOut(checkOutTime);
-        // Save the updated attendance record
-        return attendanceRepository.save(attendance);
+        Attendance savedAttendance = attendanceRepository.save(attendance);
+        return attendanceMapper.fromEntityToAttendanceDTO(savedAttendance);
     }
 
-    // Get attendance records by employee ID
-    public List<Attendance> getAttendanceRecordsByEmployeeId(Long employeeId) {
-        return attendanceRepository.findByEmployeeId(employeeId);
+    public List<AttendanceDTO> getAttendanceRecordsByEmployeeId(Long employeeId) {
+        return attendanceMapper.fromEntitiesToAttendanceDTOs(attendanceRepository.findByEmployeeId(employeeId));
     }
 }

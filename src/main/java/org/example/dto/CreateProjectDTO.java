@@ -4,36 +4,39 @@ import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 
 public class CreateProjectDTO {
-    @NotBlank(message = "Project name is required.")
+    @NotBlank(message = "Project name cannot be blank!")
+    @NotNull(message = "Project name is required!")
     private String name;
 
-    @NotNull(message = "Deadline is required.")
+    @NotNull(message = "Deadline is required!")
+    @Future(message = "The deadline must be in the future!")
     private LocalDate deadline;
 
-    @NotNull(message = "Department ID is required.")
+    @NotBlank(message = "Department ID cannot be blank!")
+    @NotNull(message = "Department ID is required!")
     private Long departmentId;
 
-    public @NotBlank(message = "Project name is required.") String getName() {
+    public @NotBlank(message = "Project name cannot be blank!") @NotNull(message = "Project name is required!") String getName() {
         return name;
     }
 
-    public void setName(@NotBlank(message = "Project name is required.") String name) {
+    public void setName(@NotBlank(message = "Project name cannot be blank!") @NotNull(message = "Project name is required!") String name) {
         this.name = name;
     }
 
-    public @NotNull(message = "Deadline is required.") LocalDate getDeadline() {
+    public @NotNull(message = "Deadline is required!") @Future(message = "The deadline must be in the future!") LocalDate getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(@NotNull(message = "Deadline is required.") LocalDate deadline) {
+    public void setDeadline(@NotNull(message = "Deadline is required!") @Future(message = "The deadline must be in the future!") LocalDate deadline) {
         this.deadline = deadline;
     }
 
-    public @NotNull(message = "Department ID is required.") Long getDepartmentId() {
+    public @NotBlank(message = "Department ID cannot be blank!") @NotNull(message = "Department ID is required!") Long getDepartmentId() {
         return departmentId;
     }
 
-    public void setDepartmentId(@NotNull(message = "Department ID is required.") Long departmentId) {
+    public void setDepartmentId(@NotBlank(message = "Department ID cannot be blank!") @NotNull(message = "Department ID is required!") Long departmentId) {
         this.departmentId = departmentId;
     }
 }

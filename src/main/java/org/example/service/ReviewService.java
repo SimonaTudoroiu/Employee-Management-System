@@ -1,6 +1,7 @@
 package org.example.service;
 
 import org.example.dto.CreateReviewDTO;
+import org.example.dto.ReviewDTO;
 import org.example.mapper.ReviewMapper;
 import org.example.model.Review;
 import org.example.repository.ReviewRepository;
@@ -18,12 +19,14 @@ public class ReviewService {
         this.reviewMapper = reviewMapper;
     }
 
-    public Review addPerformanceReview(CreateReviewDTO createReviewDTO) {
+    public ReviewDTO addPerformanceReview(CreateReviewDTO createReviewDTO) {
         Review review = reviewMapper.fromCreateDtoToEntity(createReviewDTO);
-        return reviewRepository.save(review);
+
+        Review savedReview = reviewRepository.save(review);
+        return reviewMapper.fromEntityToReviewDTO(savedReview);
     }
 
-    public List<Review> getReviewsByEmployeeId(Long employeeId) {
-        return reviewRepository.findByEmployeeId(employeeId);
+    public List<ReviewDTO> getReviewsByEmployeeId(Long employeeId) {
+        return reviewMapper.fromEntitiesToReviewDTOs(reviewRepository.findByEmployeeId(employeeId));
     }
 }

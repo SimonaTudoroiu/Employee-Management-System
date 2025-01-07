@@ -4,39 +4,42 @@ import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 
 public class CreateLeaveDTO {
-    @NotNull(message = "Employee ID is required.")
+    @NotNull(message = "Employee ID is required!")
+    @NotBlank(message = "Employee ID cannot be blank!")
     private Long employeeId;
 
-    @NotNull(message = "Start date is required.")
+    @NotNull(message = "Start date is required!")
+    @Future(message = "The start date must be in the future!")
     private LocalDate startDate;
 
     @NotNull(message = "End date is required.")
+    @Future(message = "The end date must be in the future!")
     private LocalDate endDate;
 
     @NotBlank(message = "Reason is required.")
     private String reason;
 
-    public @NotNull(message = "Employee ID is required.") Long getEmployeeId() {
+    public @NotNull(message = "Employee ID is required!") @NotBlank(message = "Employee ID cannot be blank!") Long getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(@NotNull(message = "Employee ID is required.") Long employeeId) {
+    public void setEmployeeId(@NotNull(message = "Employee ID is required!") @NotBlank(message = "Employee ID cannot be blank!") Long employeeId) {
         this.employeeId = employeeId;
     }
 
-    public @NotNull(message = "Start date is required.") LocalDate getStartDate() {
+    public @NotNull(message = "Start date is required!") @Future(message = "The start date must be in the future!") LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(@NotNull(message = "Start date is required.") LocalDate startDate) {
+    public void setStartDate(@NotNull(message = "Start date is required!") @Future(message = "The start date must be in the future!") LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public @NotNull(message = "End date is required.") LocalDate getEndDate() {
+    public @NotNull(message = "End date is required.") @Future(message = "The end date must be in the future!") LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(@NotNull(message = "End date is required.") LocalDate endDate) {
+    public void setEndDate(@NotNull(message = "End date is required.") @Future(message = "The end date must be in the future!") LocalDate endDate) {
         this.endDate = endDate;
     }
 

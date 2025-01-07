@@ -3,16 +3,17 @@ package org.example.dto;
 import jakarta.validation.constraints.*;
 
 public class CreateDepartmentDTO {
-    @NotBlank(message = "Department name is required.")
+    @NotNull(message = "Department name is required!")
+    @NotBlank(message = "Department name cannot be blank!")
     private String name;
 
     private String description;
 
-    public @NotBlank(message = "Department name is required.") String getName() {
+    public @NotNull(message = "Department name is required!") @NotBlank(message = "Department name cannot be blank!") String getName() {
         return name;
     }
 
-    public void setName(@NotBlank(message = "Department name is required.") String name) {
+    public void setName(@NotNull(message = "Department name is required!") @NotBlank(message = "Department name cannot be blank!") String name) {
         this.name = name;
     }
 

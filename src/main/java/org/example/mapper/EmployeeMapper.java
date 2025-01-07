@@ -1,33 +1,37 @@
 package org.example.mapper;
 
 import org.example.dto.CreateEmployeeDTO;
+import org.example.dto.EmployeeDTO;
 import org.example.dto.UpdateEmployeeDTO;
+import org.example.exception.ResourceNotFoundException;
 import org.example.model.Department;
 import org.example.model.Employee;
 import org.example.repository.DepartmentRepository;
+import org.example.repository.EmployeeRepository;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class EmployeeMapper {
     private final DepartmentRepository departmentRepository;
+    private final EmployeeRepository employeeRepository;
 
-    // Injecting the DepartmentRepository to fetch the Department based on ID for CreateEmployeeDTO
-    public EmployeeMapper(DepartmentRepository departmentRepository) {
+    public EmployeeMapper(DepartmentRepository departmentRepository, EmployeeRepository employeeRepository) {
         this.departmentRepository = departmentRepository;
+        this.employeeRepository = employeeRepository;
     }
 
-    // Converts CreateEmployeeDTO to Employee entity (for creating a new employee)
     public Employee fromCreateDtoToEntity(CreateEmployeeDTO createEmployeeDTO) {
         Employee employee = new Employee();
         employee.setName(createEmployeeDTO.getName());
         employee.setEmail(createEmployeeDTO.getEmail());
         employee.setPhone(createEmployeeDTO.getPhone());
         employee.setRole(createEmployeeDTO.getRole());
-        employee.setJoinDate(LocalDate.now());  // Set the join date to current date
+        employee.setJoinDate(LocalDate.now());
 
-        // Fetch the department using the department ID from DTO and set it on the employee
         Department department = departmentRepository.findById(createEmployeeDTO.getDepartmentId())
                 .orElseThrow(() -> new RuntimeException("Department not found"));
         employee.setDepartment(department);
@@ -35,8 +39,9 @@ public class EmployeeMapper {
         return employee;
     }
 
-    // Converts UpdateEmployeeDTO to Employee entity (for updating an existing employee)
-    public Employee fromUpdateDtoToEntity(UpdateEmployeeDTO updateEmployeeDTO, Employee existingEmployee) {
+    public Employee fromUpdateDtoToEntity(UpdateEmployeeDTO updateEmployeeDTO) {
+        Employee existingEmployee = employeeRepository.findById(updateEmployeeDTO.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with ID: " + updateEmployeeDTO.getId()));
         if (updateEmployeeDTO.getPhone() != null) {
             existingEmployee.setPhone(updateEmployeeDTO.getPhone());
         }
@@ -46,22 +51,22 @@ public class EmployeeMapper {
         return existingEmployee;
     }
 
-    // Converts Employee entity to CreateEmployeeDTO (usually not needed, but can be useful for response purposes)
-    public CreateEmployeeDTO fromEntityToCreateDto(Employee employee) {
-        CreateEmployeeDTO createEmployeeDTO = new CreateEmployeeDTO();
-        createEmployeeDTO.setName(employee.getName());
-        createEmployeeDTO.setEmail(employee.getEmail());
-        createEmployeeDTO.setPhone(employee.getPhone());
-        createEmployeeDTO.setRole(employee.getRole());
-        createEmployeeDTO.setDepartmentId(employee.getDepartment().getId()); // Return the department ID
-        return createEmployeeDTO;
+    public EmployeeDTO fromEntityToEmployeeDTO(Employee employee) {
+        EmployeeDTO dto = new EmployeeDTO();
+        dto.setId(employee.getId());
+        dto.setName(employee.getName());
+        dto.setEmail(employee.getEmail());
+        dto.setPhone(employee.getPhone());
+        dto.setRole(employee.getRole());
+        dto.setDepartmentName(employee.getDepartment() != null ? employee.getDepartment().getName() : null);
+        dto.setJoinDate(employee.getJoinDate());
+
+        return dto;
     }
 
-    // Converts Employee entity to UpdateEmployeeDTO (usually for partial updates)
-    public UpdateEmployeeDTO fromEntityToUpdateDto(Employee employee) {
-        UpdateEmployeeDTO updateEmployeeDTO = new UpdateEmployeeDTO();
-        updateEmployeeDTO.setPhone(employee.getPhone());
-        updateEmployeeDTO.setRole(employee.getRole());
-        return updateEmployeeDTO;
+    public List<EmployeeDTO> fromEntitiesToEmployeeDTOs(List<Employee> employees) {
+        return employees.stream()
+                .map(this::fromEntityToEmployeeDTO)
+                .collect(Collectors.toList());
     }
 }

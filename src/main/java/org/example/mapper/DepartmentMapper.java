@@ -1,8 +1,14 @@
 package org.example.mapper;
 
 import org.example.dto.CreateDepartmentDTO;
+import org.example.dto.DepartmentDTO;
+import org.example.dto.EmployeeDTO;
 import org.example.model.Department;
+import org.example.model.Employee;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class DepartmentMapper {
@@ -18,15 +24,19 @@ public class DepartmentMapper {
         return department;
     }
 
-    public CreateDepartmentDTO fromEntityToCreateDto(Department department) {
-        if (department == null) {
-            return null;
-        }
 
-        CreateDepartmentDTO createDepartmentDTO = new CreateDepartmentDTO();
-        createDepartmentDTO.setName(department.getName());
-        createDepartmentDTO.setDescription(department.getDescription());
+    public DepartmentDTO fromEntityToDepartmentDTO(Department department) {
+        DepartmentDTO dto = new DepartmentDTO();
+        dto.setId(department.getId());
+        dto.setName(department.getName());
+        dto.setDescription(department.getDescription());
 
-        return createDepartmentDTO;
+        return dto;
+    }
+
+    public List<DepartmentDTO> fromEntitiesToEmployeeDTOs(List<Department> departments) {
+        return departments.stream()
+                .map(this::fromEntityToDepartmentDTO)
+                .collect(Collectors.toList());
     }
 }
