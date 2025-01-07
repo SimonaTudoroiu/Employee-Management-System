@@ -28,14 +28,14 @@ public class EmployeeService {
     }
 
     public EmployeeDTO createEmployee(CreateEmployeeDTO createEmployeeDTO) {
-        Employee employee = employeeMapper.fromCreateDtoToEntity(createEmployeeDTO);
-
-        if (employee.getName() == null || employee.getName().isEmpty()) {
+        if (createEmployeeDTO.getName() == null || createEmployeeDTO.getName().isEmpty()) {
             throw new InvalidInputException("Employee name cannot be empty.");
         }
 
         Department department = departmentRepository.findById(createEmployeeDTO.getDepartmentId())
                 .orElseThrow(() -> new ResourceNotFoundException("Department not found with ID: " + createEmployeeDTO.getDepartmentId()));
+
+        Employee employee = employeeMapper.fromCreateDtoToEntity(createEmployeeDTO);
 
         employee.setDepartment(department);
 
@@ -43,6 +43,9 @@ public class EmployeeService {
 
         return employeeMapper.fromEntityToEmployeeDTO(savedEmployee);
     }
+
+
+
 
 
     public EmployeeDTO getEmployeeById(Long id) {

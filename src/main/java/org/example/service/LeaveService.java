@@ -36,29 +36,27 @@ public class LeaveService {
 
     public LeaveDTO approveLeave(Long leaveId) {
         Leave leave = leaveRepository.findById(leaveId)
-                .orElseThrow(() -> new ResourceNotFoundException("Leave request not found with ID: " + leaveId));
+                .orElseThrow(() -> new ResourceNotFoundException("Leave not found with ID: " + leaveId));
 
-        UpdateLeaveDTO updateLeaveDTO = new UpdateLeaveDTO(Leave.LeaveStatus.APPROVED);
-
-        leaveMapper.fromUpdateDtoToEntity(updateLeaveDTO, leave);
+        leave.setStatus(Leave.LeaveStatus.APPROVED);
 
         Leave savedLeave = leaveRepository.save(leave);
 
         return leaveMapper.fromEntityToLeaveDTO(savedLeave);
     }
+
 
     public LeaveDTO rejectLeave(Long leaveId) {
         Leave leave = leaveRepository.findById(leaveId)
-                .orElseThrow(() -> new ResourceNotFoundException("Leave request not found with ID: " + leaveId));
+                .orElseThrow(() -> new ResourceNotFoundException("Leave not found with ID: " + leaveId));
 
-        UpdateLeaveDTO updateLeaveDTO = new UpdateLeaveDTO(Leave.LeaveStatus.REJECTED);
+        leave.setStatus(Leave.LeaveStatus.REJECTED);
 
-        leaveMapper.fromUpdateDtoToEntity(updateLeaveDTO, leave);
+        Leave updatedLeave = leaveRepository.save(leave);
 
-        Leave savedLeave = leaveRepository.save(leave);
-
-        return leaveMapper.fromEntityToLeaveDTO(savedLeave);
+        return leaveMapper.fromEntityToLeaveDTO(updatedLeave);
     }
+
 
     public List<LeaveDTO> getAllLeavesByDepartmentId(Long departmentId) {
         List<Employee> employees = employeeRepository.findByDepartmentId(departmentId);

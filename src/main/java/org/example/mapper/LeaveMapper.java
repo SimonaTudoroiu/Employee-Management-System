@@ -4,6 +4,7 @@ import org.example.dto.CreateLeaveDTO;
 import org.example.dto.EmployeeDTO;
 import org.example.dto.LeaveDTO;
 import org.example.dto.UpdateLeaveDTO;
+import org.example.exception.ResourceNotFoundException;
 import org.example.model.Employee;
 import org.example.model.Leave;
 import org.example.repository.EmployeeRepository;
@@ -25,7 +26,7 @@ public class LeaveMapper {
         Leave leave = new Leave();
 
         Employee employee = employeeRepository.findById(createLeaveDTO.getEmployeeId())
-                .orElseThrow(() -> new RuntimeException("Employee not found with ID: " + createLeaveDTO.getEmployeeId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with ID: " + createLeaveDTO.getEmployeeId()));
         leave.setEmployee(employee);
 
         leave.setStartDate(createLeaveDTO.getStartDate());
