@@ -3,6 +3,7 @@ package org.example.service;
 import org.example.dto.CreateDepartmentDTO;
 import org.example.dto.DepartmentDTO;
 import org.example.dto.EmployeeDTO;
+import org.example.exception.ResourceNotFoundException;
 import org.example.mapper.DepartmentMapper;
 import org.example.mapper.EmployeeMapper;
 import org.example.model.Department;
@@ -31,6 +32,9 @@ public class DepartmentService {
     }
 
     public List<EmployeeDTO> getEmployeesByDepartmentId(Long departmentId) {
+        Department department = departmentRepository.findById(departmentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Department not found with ID: " + departmentId));
+
         return employeeMapper.fromEntitiesToEmployeeDTOs(departmentRepository.findEmployeesByDepartmentId(departmentId));
     }
 
@@ -39,6 +43,9 @@ public class DepartmentService {
     }
 
     public void deleteDepartment(Long departmentId) {
+        Department department = departmentRepository.findById(departmentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Department not found with ID: " + departmentId));
+
         departmentRepository.deleteById(departmentId);
     }
 }

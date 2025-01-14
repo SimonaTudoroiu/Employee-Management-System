@@ -32,7 +32,7 @@ public class LeaveMapper {
         leave.setStartDate(createLeaveDTO.getStartDate());
         leave.setEndDate(createLeaveDTO.getEndDate());
         leave.setReason(createLeaveDTO.getReason());
-        leave.setStatus(Leave.LeaveStatus.PENDING); // Default status when creating a leave request
+        leave.setStatus(Leave.LeaveStatus.PENDING);
 
         return leave;
     }

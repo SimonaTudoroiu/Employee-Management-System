@@ -5,7 +5,6 @@ import java.time.LocalDate;
 
 public class CreateLeaveDTO {
     @NotNull(message = "Employee ID is required!")
-    @NotBlank(message = "Employee ID cannot be blank!")
     private Long employeeId;
 
     @NotNull(message = "Start date is required!")
@@ -19,11 +18,11 @@ public class CreateLeaveDTO {
     @NotBlank(message = "Reason is required.")
     private String reason;
 
-    public @NotNull(message = "Employee ID is required!") @NotBlank(message = "Employee ID cannot be blank!") Long getEmployeeId() {
+    public @NotNull(message = "Employee ID is required!") Long getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(@NotNull(message = "Employee ID is required!") @NotBlank(message = "Employee ID cannot be blank!") Long employeeId) {
+    public void setEmployeeId(@NotNull(message = "Employee ID is required!") Long employeeId) {
         this.employeeId = employeeId;
     }
 

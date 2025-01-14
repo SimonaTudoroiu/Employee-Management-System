@@ -5,7 +5,6 @@ import jakarta.validation.constraints.*;
 
 public class CreateReviewDTO {
     @NotNull(message = "Employee ID is required!")
-    @NotBlank(message = "Employee ID cannot be blank!")
     private Long employeeId;
 
     @NotNull(message = "Comments are required!")
@@ -17,11 +16,11 @@ public class CreateReviewDTO {
     @Max(value = 5, message = "Score must not exceed 5!")
     private int score;
 
-    public @NotNull(message = "Employee ID is required!") @NotBlank(message = "Employee ID cannot be blank!") Long getEmployeeId() {
+    public @NotNull(message = "Employee ID is required!") Long getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(@NotNull(message = "Employee ID is required!") @NotBlank(message = "Employee ID cannot be blank!") Long employeeId) {
+    public void setEmployeeId(@NotNull(message = "Employee ID is required!") Long employeeId) {
         this.employeeId = employeeId;
     }
 

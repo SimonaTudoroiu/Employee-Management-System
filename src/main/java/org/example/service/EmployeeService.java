@@ -55,13 +55,16 @@ public class EmployeeService {
     }
 
     public EmployeeDTO updateEmployee(Long id, UpdateEmployeeDTO updateEmployeeDTO) {
-        Employee existingEmployee = employeeMapper.fromUpdateDtoToEntity(updateEmployeeDTO);
+        Employee existingEmployee = employeeMapper.fromUpdateDtoToEntity(id, updateEmployeeDTO);
         Employee savedEmployee = employeeRepository.save(existingEmployee);
 
         return employeeMapper.fromEntityToEmployeeDTO(savedEmployee);
     }
 
     public void deleteEmployee(Long id) {
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with ID: " + id));
+
         employeeRepository.deleteById(id);
     }
 

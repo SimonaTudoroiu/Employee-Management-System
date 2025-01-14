@@ -39,9 +39,9 @@ public class EmployeeMapper {
         return employee;
     }
 
-    public Employee fromUpdateDtoToEntity(UpdateEmployeeDTO updateEmployeeDTO) {
-        Employee existingEmployee = employeeRepository.findById(updateEmployeeDTO.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with ID: " + updateEmployeeDTO.getId()));
+    public Employee fromUpdateDtoToEntity(Long id, UpdateEmployeeDTO updateEmployeeDTO) {
+        Employee existingEmployee = employeeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with ID: " + id));
         if (updateEmployeeDTO.getPhone() != null) {
             existingEmployee.setPhone(updateEmployeeDTO.getPhone());
         }

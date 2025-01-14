@@ -14,6 +14,7 @@ public class CreateEmployeeDTO {
 
     @NotNull(message = "Phone number is required!")
     @Pattern(regexp = "^[0-9]*$", message = "Phone number should have only numbers!")
+    @Size(min = 10, max = 10, message = "Phone number should have only 10 numbers!")
     private String phone;
 
     @NotNull(message = "Role is required!")
@@ -38,11 +39,11 @@ public class CreateEmployeeDTO {
         this.email = email;
     }
 
-    public @NotNull(message = "Phone number is required!") @Pattern(regexp = "^[0-9]*$", message = "Phone number should have only numbers!") String getPhone() {
+    public @NotNull(message = "Phone number is required!") @Pattern(regexp = "^[0-9]*$", message = "Phone number should have only numbers!") @Size(min = 10, max = 10, message = "Phone number should have only 10 numbers!") String getPhone() {
         return phone;
     }
 
-    public void setPhone(@NotNull(message = "Phone number is required!") @Pattern(regexp = "^[0-9]*$", message = "Phone number should have only numbers!") String phone) {
+    public void setPhone(@NotNull(message = "Phone number is required!") @Pattern(regexp = "^[0-9]*$", message = "Phone number should have only numbers!") @Size(min = 10, max = 10, message = "Phone number should have only 10 numbers!") String phone) {
         this.phone = phone;
     }
 

@@ -10,10 +10,12 @@ import org.example.mapper.ProjectMapper;
 import org.example.model.Department;
 import org.example.model.Employee;
 import org.example.model.Project;
+import org.example.repository.DepartmentRepository;
 import org.example.repository.EmployeeRepository;
 import org.example.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,15 +24,20 @@ public class ProjectService {
     private final ProjectMapper projectMapper;
     private final EmployeeRepository employeeRepository;
     private final EmployeeMapper employeeMapper;
+    private final DepartmentRepository departmentRepository;
 
-    public ProjectService(ProjectRepository projectRepository, ProjectMapper projectMapper, EmployeeRepository employeeRepository, EmployeeMapper employeeMapper) {
+    public ProjectService(ProjectRepository projectRepository, ProjectMapper projectMapper, EmployeeRepository employeeRepository, EmployeeMapper employeeMapper, DepartmentRepository departmentRepository) {
         this.projectRepository = projectRepository;
         this.projectMapper = projectMapper;
         this.employeeRepository = employeeRepository;
         this.employeeMapper = employeeMapper;
+        this.departmentRepository = departmentRepository;
     }
 
     public ProjectDTO createProject(CreateProjectDTO createProjectDTO) {
+        Department department = departmentRepository.findById(createProjectDTO.getDepartmentId())
+                .orElseThrow(() -> new ResourceNotFoundException("Department not found with ID: " + createProjectDTO.getDepartmentId()));
+
         Project project = projectMapper.fromCreateDtoToEntity(createProjectDTO);
 
         Project savedProject = projectRepository.save(project);
@@ -39,6 +46,9 @@ public class ProjectService {
     }
 
     public void deleteProject(Long id) {
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found with ID: " + id));
+
         projectRepository.deleteById(id);
     }
 
@@ -51,7 +61,15 @@ public class ProjectService {
             throw new InvalidInputException("Project must belong to a department.");
         }
 
-        List<Employee> employees = employeeRepository.findAllById(employeeIds);
+        List<Employee> employees = new ArrayList<>();
+
+        for(Long id : employeeIds){
+            Employee employee = employeeRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Employee not found with ID: " + id));
+
+            employees.add(employee);
+
+        }
 
         for (Employee employee : employees) {
             if (!employee.getDepartment().getId().equals(projectDepartment.getId())) {

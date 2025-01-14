@@ -4,6 +4,7 @@ package org.example.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Table
@@ -28,7 +29,7 @@ public class Project {
             joinColumns = @JoinColumn(name = "project_id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id")
     )
-    private List<Employee> assignedEmployees;
+    private List<Employee> assignedEmployees = new ArrayList<>();
 
 
     public Long getId() {

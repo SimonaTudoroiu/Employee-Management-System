@@ -1,6 +1,8 @@
 package org.example.dto;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -8,7 +10,9 @@ public class AttendanceDTO {
     private Long id;
     private String employeeName;
     private LocalDate date;
+    @Schema(type = "string", format = "time", example = "01:01:01")
     private LocalTime checkIn;
+    @Schema(type = "string", format = "time", example = "01:01:01")
     private LocalTime checkOut;
 
     public Long getId() {

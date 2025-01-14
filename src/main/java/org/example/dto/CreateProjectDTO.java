@@ -12,7 +12,6 @@ public class CreateProjectDTO {
     @Future(message = "The deadline must be in the future!")
     private LocalDate deadline;
 
-    @NotBlank(message = "Department ID cannot be blank!")
     @NotNull(message = "Department ID is required!")
     private Long departmentId;
 
@@ -32,11 +31,11 @@ public class CreateProjectDTO {
         this.deadline = deadline;
     }
 
-    public @NotBlank(message = "Department ID cannot be blank!") @NotNull(message = "Department ID is required!") Long getDepartmentId() {
+    public @NotNull(message = "Department ID is required!") Long getDepartmentId() {
         return departmentId;
     }
 
-    public void setDepartmentId(@NotBlank(message = "Department ID cannot be blank!") @NotNull(message = "Department ID is required!") Long departmentId) {
+    public void setDepartmentId(@NotNull(message = "Department ID is required!") Long departmentId) {
         this.departmentId = departmentId;
     }
 }

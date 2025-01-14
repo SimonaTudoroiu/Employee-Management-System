@@ -2,6 +2,7 @@ package org.example.mapper;
 
 import org.example.dto.AttendanceDTO;
 import org.example.dto.CreateAttendanceDTO;
+import org.example.exception.ResourceNotFoundException;
 import org.example.model.Attendance;
 import org.example.model.Employee;
 import org.example.repository.EmployeeRepository;
@@ -24,7 +25,7 @@ public class AttendanceMapper {
         Attendance attendance = new Attendance();
 
         Employee employee = employeeRepository.findById(createAttendanceDTO.getEmployeeId())
-                .orElseThrow(() -> new RuntimeException("Employee not found with ID: " + createAttendanceDTO.getEmployeeId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with ID: " + createAttendanceDTO.getEmployeeId()));
         attendance.setEmployee(employee);
 
         attendance.setDate(LocalDate.now());
