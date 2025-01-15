@@ -106,4 +106,4 @@ This REST API for the Employee Management System uses the following technologies
 
 ## **Entity Relationship Diagram**
 
-![Employee_Management_System_ERD drawio](https://github.com/user-attachments/assets/6e7ea0c5-8a55-4454-9395-3433609719c8)
+![ERD_Employee_Management_System drawio](https://github.com/user-attachments/assets/06f08ee2-a17b-4816-93d3-e086abc15bae)
